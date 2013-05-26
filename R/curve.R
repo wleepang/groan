@@ -10,12 +10,16 @@
 ##'   of a growth curve.  More details apply for \code{data.frame}.
 ##' @param x An optional atomic vector of x-coordinate values for the curve(s)
 ##'   defined by \code{y}
-##' @param smooth Option to specify additional smoothing to the input curve prior
-##'   to calculating mu.  Default is \code{NULL} for no smoothing.  Other options
-##'   are 'loess' and 'spline'.
 ##' 
 ##' @details
-##' The data.frame and matix methods attempt to locate a column called "Time" or "X" to
+##' It is highly recommended that input data be smoothed prior to calculating mu.
+##' See \link[groan]{smooth.adaptive.spline} and \link[groan]{smooth.adaptive.loess}
+##' for more details on smoothing.
+##' 
+##' The matrix method first converts the input curve object to a data.frame and
+##' then uses the data.frame method.
+##' 
+##' The data.frame method attempts to locate a column called "Time" or "X" to
 ##' use as x-coordinate values if they are not explicitly provided.  If not found, the 
 ##' first column is used.
 ##' 
@@ -36,7 +40,7 @@ mu = function(curve, ...) {
 
 ##' @rdname mu
 ##' @export
-mu.default = function(curve, x = NULL, smooth = NULL) {
+mu.default = function(curve, x = NULL) {
   # the default mu method
   # applies to atomic vectors of numeric values
   
@@ -48,14 +52,6 @@ mu.default = function(curve, x = NULL, smooth = NULL) {
   
   y = curve
   
-  # apply smoothing if requested
-  if (!is.null(smooth)) {
-    y = switch(smooth, 
-               loess  = smooth.adaptive.loess(list(x=x,y=y)),
-               spline = smooth.adaptive.spline(list(x=x,y=y)))
-    
-  }
-  
   # using smooth.spline allows for the use of predict to compute derivatives
   ss = smooth.spline(x, y)
   dydx = predict(ss, deriv=1)$y
@@ -65,7 +61,7 @@ mu.default = function(curve, x = NULL, smooth = NULL) {
 
 ##' @rdname mu
 ##' @export
-mu.data.frame = function(curve, x=NULL, smooth=NULL) {
+mu.data.frame = function(curve, x=NULL) {
   # mu method for data.frame
   # computes mu for columns
   
