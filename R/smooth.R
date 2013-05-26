@@ -29,7 +29,7 @@
 ##' @seealso \link[stats]{smooth.spline} \link[stats]{spline}
 smooth.adaptive.spline = function(x, y=NULL, pct=0.1, niter=NULL) {
   
-  if (!is.null(x$y)) {
+  if (is.recursive(x) && !is.null(x$y)) {
     xy.in = x
   } else {
     xy.in = list(x=x, y=y)
