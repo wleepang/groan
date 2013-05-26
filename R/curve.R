@@ -65,7 +65,7 @@ mu.default = function(curve, x = NULL, smooth = NULL) {
 
 ##' @rdname mu
 ##' @export
-mu.data.frame = function(curve, x, smooth) {
+mu.data.frame = function(curve, x=NULL, smooth=NULL) {
   # mu method for data.frame
   # computes mu for columns
   
@@ -87,45 +87,45 @@ mu.data.frame = function(curve, x, smooth) {
     # x values supplied, assume all columns in curves are Y
     Y = curve
     
-    if (!is.null(dim(x))) {
-      if (dim(x) != dim(Y)) {
-        stop('Dimensions of `x` do not match dimensions of `curves`.')
-      }
-      
-      MU = lapply(colnames(Y), function(n){
-        y = Y[[n]]
-        x = x[[n]]
-        
-        u = mu.default(y, x, smooth)
-      })
-      names(MU) = colnames(Y)
-      MU = as.data.frame(MU)
-      
-      return(MU)
-      
-    } else {
-      # x supplied as atomic vector
-      if (length(x) != nrow(Y)) {
-        stop('Number of timepoints specified not equal to number of timepoints in `curves`.')
-      }
-      
-      # use the default method for each column
-      MU = lapply(Y, mu.default, x)
-      
-      names(MU) = colnames(Y)
-      MU = as.data.frame(MU)
-      MU = data.frame(TIME=x, MU)
-      colnames(MU)[1] = x.col.name
-      
-      return(MU)
-    }
   }
   
+  if (!is.null(dim(x))) {
+    if (dim(x) != dim(Y)) {
+      stop('Dimensions of `x` do not match dimensions of `curves`.')
+    }
+    
+    MU = lapply(colnames(Y), function(n){
+      y = Y[[n]]
+      x = x[[n]]
+      
+      u = mu.default(y, x, smooth)
+    })
+    names(MU) = colnames(Y)
+    MU = as.data.frame(MU)
+    
+    return(MU)
+    
+  } else {
+    # x supplied as atomic vector
+    if (length(x) != nrow(Y)) {
+      stop('Number of timepoints specified not equal to number of timepoints in `curves`.')
+    }
+    
+    # use the default method for each column
+    MU = lapply(Y, mu.default, x)
+    
+    names(MU) = colnames(Y)
+    MU = as.data.frame(MU)
+    MU = data.frame(TIME=x, MU)
+    colnames(MU)[1] = x.col.name
+    
+    return(MU)
+  }
 }
 
 ##' @rdname mu
 ##' @export
-mu.matrix = function(curve, x, smooth) {
+mu.matrix = function(curve, x=NULL, smooth=NULL) {
   MU = mu.data.frame(as.data.frame(curve), x, smooth)
   return(as.matrix(MU))
 }
