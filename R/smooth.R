@@ -42,7 +42,7 @@ smooth.adaptive.spline = function(x, y=NULL, pct=0.1, niter=NULL) {
   XY = list(pct=pct, niter=niter)
   for (i in 1:niter) {
     set.seed(i) # this ensures that the same fit happens with repeated runs
-    ix = sort(sample(xy.in$x, floor((1-pct)*length(xy.in$x))))
+    ix = sort(sample(seq_along(xy.in$x), floor((1-pct)*length(xy.in$x))))
     
     xy = list(x=xy.in$x[ix], y=xy.in$y[ix])
     
