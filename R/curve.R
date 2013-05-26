@@ -74,10 +74,13 @@ mu.data.frame = function(curve, x=NULL) {
       x.col.name = colnames(curve)[x.col[1]]
       x = curve[,  x.col[1], drop=TRUE] # pick the first matching x.col
       Y = curve[, -x.col]               # exclude all matching x.cols from Y
+      
+      cat('X values:', x.col.name, '\n')
     } else {
-      # assume equally spaced timepoints
+      # use first column
       x = curve[, 1]
       Y = curve[,-1]
+      cat('X values: <1st column>\n')
     }
   } else {
     # x values supplied, assume all columns in curves are Y
@@ -86,42 +89,44 @@ mu.data.frame = function(curve, x=NULL) {
   }
   
   if (!is.null(dim(x))) {
+    # multiple time vectors provided
+    cat('Using multiple time vectors.\n')
     if (dim(x) != dim(Y)) {
       stop('Dimensions of `x` do not match dimensions of `curves`.')
     }
     
-    MU = lapply(colnames(Y), function(n){
-      y = Y[[n]]
-      x = x[[n]]
-      
-      u = mu.default(y, x, smooth)
+    U = lapply(colnames(Y), function(n){
+      u = mu(curve=Y[[n]], x=x[[n]])
     })
-    names(MU) = colnames(Y)
-    MU = as.data.frame(MU)
+    names(U) = colnames(Y)
+    U = as.data.frame(U)
     
-    return(MU)
+    return(U)
     
   } else {
     # x supplied as atomic vector
+    cat('Using one time vector.\n')
     if (length(x) != nrow(Y)) {
       stop('Number of timepoints specified not equal to number of timepoints in `curves`.')
     }
     
     # use the default method for each column
-    MU = lapply(Y, mu.default, x)
+    U = lapply(colnames(Y), function(n) {
+      u = mu(curve=Y[[n]], x=x)
+    })
     
-    names(MU) = colnames(Y)
-    MU = as.data.frame(MU)
-    MU = data.frame(TIME=x, MU)
-    colnames(MU)[1] = x.col.name
+    names(U) = colnames(Y)
+    U = as.data.frame(U)
+    U = data.frame(TIME=x, U)
+    colnames(U)[1] = x.col.name
     
-    return(MU)
+    return(U)
   }
 }
 
 ##' @rdname mu
 ##' @export
-mu.matrix = function(curve, x=NULL, smooth=NULL) {
-  MU = mu.data.frame(as.data.frame(curve), x, smooth)
-  return(as.matrix(MU))
+mu.matrix = function(curve, x=NULL) {
+  U = mu(curve=as.data.frame(curve), x=x)
+  return(as.matrix(U))
 }
