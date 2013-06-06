@@ -52,9 +52,12 @@ mu.default = function(curve, x = NULL) {
   
   y = curve
   
-  # using smooth.spline allows for the use of predict to compute derivatives
+  # using smooth.spline() allows for the use of predict to compute derivatives
   ss = smooth.spline(x, y)
   dydx = predict(ss, deriv=1)$y
+  
+  # alternatively, this can be done directly with splinefun()
+  # dydx = splinefun(x, y)(x, deriv=1)
   
   return(dydx/y)
 }
