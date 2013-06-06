@@ -101,8 +101,7 @@ smooth.adaptive.loess = function(x, y=NULL, span.interval=c(0.1, 0.7)) {
   }
   
   span.opt = optimize(function(span, x, y){
-    y.loess = loess(y~x, span=span, data.frame(x=x, y=log(y)))
-    y.predict = exp(predict(y.loess, data.frame(x=x)))
+    y.loess = loess(y~x, span=span, data.frame(x=x, y=y))
     sse = sum(y.loess$residuals^2)
     opt = sse/span
     
@@ -110,8 +109,59 @@ smooth.adaptive.loess = function(x, y=NULL, span.interval=c(0.1, 0.7)) {
     
   }, c(0.1, 0.7), x, y, maximum=FALSE)
   
-  y.loess = loess(y~x, span=span.opt$minimum, data.frame(x=x, y=log(y)))
-  y.predict = exp(predict(y.loess, data.frame(x=x)))
+  y.loess = loess(y~x, span=span.opt$minimum, data.frame(x=x, y=y))
+  y.predict = predict(y.loess, data.frame(x=x))
   
   return(list(x=x, y=unname(y.predict), span=span.opt$minimum, objective=span.opt$objective))
+}
+
+##' Adaptive smoothing using optimized lowess
+##'
+##' Performs lowess smoothing with adaptive parameter optimization
+##' 
+##' @param x An \code{xy.coords} object, \code{list()} with named numeric elements \code{x}
+##'   and \code{y}, or an atomic numeric vector of x-coordinates.  If an atomic vector
+##'   the parameter \code{y} is required.
+##' 
+##' @param y Required if the parameter \code{x} is specified as an atomic vector.
+##'   An atomic vector of y-coordinates.
+##' 
+##' @param span.interval The interval of \code{f} values, used by \link[stats]{lowess},
+##'   over which to \link[stats]{optimize} the fit. The optimization minimizes the value
+##'   of (sum of squared residuals)/span.
+##' 
+##' @return A list with components
+##' \describe{
+##'   \item{x}{x-coordinates of the smoothed curve}
+##'   \item{y}{y-coordinates of the smoothed curve}
+##'   \item{span}{the \code{span} value used for the optimized fit}
+##'   \item{objective}{the final value of the objective function}
+##'   }
+##' @export
+##' @seealso \link[stats]{lowess} \link[stats]{optimize}
+smooth.adaptive.lowess = function(x, y=NULL, span.interval=c(0.1, 0.7)) {
+  # uses loess (local weighted polynomial fitting) to smooth curve
+  # optimizes the span parameter to fit the data but avoid over-smoothing
+  
+  if (is.null(y) & ! is.list(x)) {
+    stop('first argument must be xy.coords')
+  }
+  
+  if (is.null(y) & is.list(x)) {
+    y = x$y
+    x = x$x
+  }
+  
+  span.opt = optimize(function(span, x, y){
+    y.lowess = lowess(x, y, f=span)$y
+    sse = sum((y-y.lowess)^2)
+    opt = sse/span
+    
+    return(opt)
+    
+  }, c(0.1, 0.7), x, y, maximum=FALSE)
+  
+  y.lowess = lowess(x, y, f=span.opt$minimum)$y
+  
+  return(list(x=x, y=y.lowess, span=span.opt$minimum, objective=span.opt$objective))
 }
