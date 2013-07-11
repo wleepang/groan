@@ -115,6 +115,42 @@ smooth.adaptive.loess = function(x, y=NULL, span.interval=c(0.1, 0.7)) {
   return(list(x=x, y=unname(y.predict), span=span.opt$minimum, objective=span.opt$objective))
 }
 
+##' Wrapper for \code{loess()} that uses \code{xy.coords}
+##' 
+##' @param x An \code{xy.coords} object, \code{list()} with named numeric elements \code{x}
+##'   and \code{y}, or an atomic numeric vector of x-coordinates.  If an atomic vector
+##'   the parameter \code{y} is required.
+##' 
+##' @param y Required if the parameter \code{x} is specified as an atomic vector.
+##'   An atomic vector of y-coordinates.
+##' 
+##' @param ... Additional arguments to be passed to \code{loess()}
+##' 
+##' @return A list with components
+##'   \describe{
+##'     \item{x}{x-coordinates of the smoothed curve}
+##'     \item{y}{y-coordinates of the smoothed curve}
+##'     \item{loess}{object returned by \code{loess()}}
+##'   }
+##' 
+##' @seealso \link[stats]{loess}
+##' @export
+loess.xy.coords = function(x, y=NULL, ...) {
+  if (is.null(y) & ! is.list(x)) {
+    stop('First argument `x` must be xy.coords if `y` is NULL')
+  }
+  
+  if (is.null(y) & is.list(x)) {
+    y = x$y
+    x = x$x
+  }
+  
+  obj = loess(y~x, list(x=x, y=y), ...)
+  y.s = predict(obj)
+  
+  return(list(x=x, y=y.s, loess=obj))
+}
+
 ##' Adaptive smoothing using optimized lowess
 ##'
 ##' Performs lowess smoothing with adaptive parameter optimization
