@@ -388,7 +388,7 @@ groan.tlag = function(x, pct.thresh = 0.05){
 ##' @return A numeric vector of lag times
 ##' @seealso \link[groan]{groan.tlag}
 ##' @export
-groan.tsat = function(x, pct.thresh){
+groan.tsat = function(x, pct.thresh = 0.05){
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
