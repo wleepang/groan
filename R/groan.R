@@ -408,6 +408,7 @@ groan.tsat = function(x, pct.thresh){
 ##'   The value of the fitted curve at \code{x-coord = Inf} is returned.
 ##' 
 ##' @return A numeric vector of capacity values
+##' 
 ##' @export
 groan.capacity = function(x){
   if (!is(x, 'Curves')) {
