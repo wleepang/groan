@@ -351,13 +351,14 @@ groan.mumax = function(x, na.rm=T) {
 ##' Estimate lag time
 ##' 
 ##' @param x A groan Curves object of specific growth rate profiles
-##' @param pct.thresh Percent threshold relative to the curve maximum for
-##'   detection.  Default is 5% (0.05).
+##' @param pct.thresh Percent threshold relative to the curve maximum for detection.  Default is 5\% (0.05).
 ##' 
-##' @details Scans the curve going forward in time.  The point at which the curve
+##' @details
+##'   Scans the curve going forward in time.  The point at which the curve
 ##'   crosses the defined threshold is returned.
 ##' 
 ##' @return A numeric vector of lag times
+##' @seealso \link[groan]{groan.tsat}
 ##' @export
 groan.tlag = function(x, pct.thresh = 0.05){
   if (!is(x, 'Curves')) {
@@ -375,13 +376,14 @@ groan.tlag = function(x, pct.thresh = 0.05){
 ##' Estimate saturation time
 ##' 
 ##' @param x A groan Curves object of specific growth rate profiles
-##' @param pct.thresh Percent threshold relative to the curve maximum for
-##'   detection.  Default is 5% (0.05).
+##' @param pct.thresh Percent threshold relative to the curve maximum for detection.  Default is 5\% (0.05).
 ##' 
-##' @details Scans the curve going backward in time.  The point at which the curve
+##' @details
+##'   Scans the curve going backward in time.  The point at which the curve
 ##'   crosses the defined threshold is returned.
 ##' 
 ##' @return A numeric vector of lag times
+##' @seealso \link[groan]{groan.tlag}
 ##' @export
 groan.tsat = function(x, pct.thresh){
   if (!is(x, 'Curves')) {
