@@ -27,7 +27,6 @@
 ##' 1-D numeric vector of length N, or a data.frame or matrix of the same size.
 ##' Column names are matched if possible.
 ##' 
-##' @export
 ##' @seealso \link[stats]{smooth.spline}, \link[stats]{predict.smooth.spline}, 
 ##'   \link[groan]{smooth.adaptive.loess}, \link[groan]{smooth.adaptive.spline}
 mu = function(curve, ...) {
@@ -39,7 +38,6 @@ mu = function(curve, ...) {
 }
 
 ##' @rdname mu
-##' @export
 mu.default = function(curve, x = NULL) {
   # the default mu method
   # applies to atomic vectors of numeric values
@@ -63,7 +61,6 @@ mu.default = function(curve, x = NULL) {
 }
 
 ##' @rdname mu
-##' @export
 mu.data.frame = function(curve, x=NULL) {
   # mu method for data.frame
   # computes mu for columns
@@ -128,7 +125,6 @@ mu.data.frame = function(curve, x=NULL) {
 }
 
 ##' @rdname mu
-##' @export
 mu.matrix = function(curve, x=NULL) {
   U = mu(curve=as.data.frame(curve), x=x)
   return(as.matrix(U))
