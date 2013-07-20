@@ -207,7 +207,7 @@ groan.pulsefit = function(x) {
     
     return(xy)
   })
-  
+  class(x.f) = class(x)
   return(x.f)
 }
 
@@ -247,7 +247,7 @@ groan.logifit = function(x) {
     
     return(xy)
   })
-  
+  class(x.f) = class(x)
   return(x.f)
 }
 
