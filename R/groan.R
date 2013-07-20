@@ -422,7 +422,7 @@ groan.capacity = function(x){
   
   cap = vapply(x, function(xy){
     logip(Inf, p=xy$logifit$par)
-  })
+  }, numeric(1))
   
   return(cap)
 }
