@@ -138,6 +138,8 @@ groan.mu = function(x) {
     
     return(xu)
   })
+  
+  class(u) = class(x)
 }
 
 ##' Fit model
