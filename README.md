@@ -18,7 +18,7 @@ Installation
 ------------
 `groan` can be installed directly from `github` using the `devtools` R package:
 
-```r
+```R
 require(devtools)
 install_github('groan', 'wleepang')
 ```
@@ -27,7 +27,7 @@ Usage
 -----
 Once installed, load `groan` via:
 
-```r
+```R
 library(groan)
 ```
 
@@ -46,7 +46,7 @@ numeric values prior to analysis with `groan`.
 
 A simple workflow for extracting maximum growth rates would be:
 
-```r
+```R
 Y = read.csv('path/to/your/data.csv', stringsAsFactors=F)
 Y = groan.init(Y)
 U = groan.mu(Y)
@@ -57,7 +57,7 @@ u.max = groan.mumax(U)
 A more complicated workflow that involves adaptive data smoothing and model
 fitting, with tabulation of additional growth parameters would be:
 
-```r
+```R
 Y = read.csv('path/to/your/data.csv', stringsAsFactors=F)
 Y = groan.init(Y)
 Y.s = groan.smooth(Y, adaptive=T, method='loess')
