@@ -15,3 +15,4 @@ Collate:
     'smooth.R'
     'data.R'
     'groan.R'
+    'methods.R'
