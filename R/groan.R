@@ -155,7 +155,7 @@ groan.mu = function(x) {
 ##' @return A groan Curves object were y-values are replaced with fitted model
 ##'   predictions.  Also, model fit details are appended as additional properties.
 ##' 
-##' @seealso \link[groan]{groan.pulsefit} \link[groan]{groan.logifit}
+##' @seealso \link[groan]{groan.fit.pulse} \link[groan]{groan.fit.logi}
 ##' @export
 groan.fit = function(x, method=c('pulse', 'logi')) {
   if (!is(x, 'Curves')) {
@@ -164,8 +164,8 @@ groan.fit = function(x, method=c('pulse', 'logi')) {
   
   method = match.arg(method)
   fit.fun = switch(method, 
-                   pulse = groan.pulsefit, 
-                   logi  = groan.logifit)
+                   pulse = groan.fit.pulse, 
+                   logi  = groan.fit.logi)
   
   return(fit.fun(x))
 }
@@ -181,10 +181,8 @@ groan.fit = function(x, method=c('pulse', 'logi')) {
 ##'   In addition, results of the fit, e.g. pulse parameters and goodness-of-fit
 ##'   statistics.
 ##' 
-##' @seealso \link[groan]{groan.logifit}, \link[stats]{nlminb}
-##' 
-##' @export
-groan.pulsefit = function(x) {
+##' @seealso \link[groan]{groan.fit.logi}, \link[stats]{nlminb}
+groan.fit.pulse = function(x) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -202,8 +200,8 @@ groan.pulsefit = function(x) {
     gof = ks.test(xy$y, y.f)
     
     xy$y = y.f
-    xy[['pulsefit']] = fit
-    xy[['pulsefit.gof']] = gof
+    xy[['fit.pulse']] = fit
+    xy[['fit.pulse.gof']] = gof
     
     return(xy)
   })
@@ -221,10 +219,8 @@ groan.pulsefit = function(x) {
 ##'   sigmoid profile.  In addition, results of the fit, e.g. sigmoid parameters
 ##'   and goodness-of-fit statistics.
 ##' 
-##' @seealso \link[groan]{groan.pulsefit}, \link[stats]{nlminb}
-##' 
-##' @export
-groan.logifit = function(x) {
+##' @seealso \link[groan]{groan.fit.pulse}, \link[stats]{nlminb}
+groan.fit.logi = function(x) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -242,8 +238,8 @@ groan.logifit = function(x) {
     gof = ks.test(xy$y, y.f)
     
     xy$y = y.f
-    xy[['logifit']] = fit
-    xy[['logifit.gof']] = gof
+    xy[['fit.logi']] = fit
+    xy[['fit.logi.gof']] = gof
     
     return(xy)
   })
@@ -416,12 +412,12 @@ groan.capacity = function(x){
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
   
-  if (!'logifit' %in% names(x[[1]])) {
-    x = groan.logifit(x)
+  if (!'fit.logi' %in% names(x[[1]])) {
+    x = groan.fit(x, method='logi')
   }
   
   cap = vapply(x, function(xy){
-    logip(Inf, p=xy$logifit$par)
+    logip(Inf, p=xy$fit.logi$par)
   }, numeric(1))
   
   return(cap)
