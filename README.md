@@ -71,7 +71,7 @@ U.f = groan.fit(U.s, method='pulse')
 
 stats = data.frame(mumax = groan.mumax(U.f),
                    t.lag = groan.tlag(U.f),
-                   gen   = groan.generates(U.f))
+                   gen   = groan.generations(U.f))
 ```
 
 Credits
