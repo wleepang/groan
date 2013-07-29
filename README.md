@@ -25,6 +25,7 @@ install_github('groan', 'wleepang')
 
 Usage
 -----
+
 Once installed, load `groan` via:
 
 ```R
@@ -43,6 +44,8 @@ Time   | Culture1  | Culture2  | ...
 
 Note, time values that are imported as strings will need to be converted to
 numeric values prior to analysis with `groan`.
+
+### Examples
 
 A simple workflow for extracting maximum growth rates would be:
 
@@ -70,3 +73,16 @@ stats = data.frame(mumax = groan.mumax(U.f),
                    t.lag = groan.tlag(U.f),
                    gen   = groan.generates(U.f))
 ```
+
+Credits
+-------
+`groan` was developed using:
+
+ * [RStudio](http://www.rstudio.com/ide)
+ * [roxygen2](http://cran.r-project.org/web/packages/roxygen2/index.html)
+ * [devtools](http://cran.r-project.org/web/packages/devtools/index.html)
+
+Features of `groan` were inspired/suggested by:
+ * [BioscreenUtils](https://github.com/wleepang/BioscreenUtils)
+ * [GCAF](https://github.com/KarlynB23/GCAF_git) by Goodwin Gibbins, [David Reiss](http://github.com/dreiss-isb), and [Karlyn Beer](http://github.com/KarlynB23)
+ * Jabus Tyerman
