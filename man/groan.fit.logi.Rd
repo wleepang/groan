@@ -1,8 +1,8 @@
-\name{groan.logifit}
-\alias{groan.logifit}
+\name{groan.fit.logi}
+\alias{groan.fit.logi}
 \title{Logistic sigmoid model fitting}
 \usage{
-  groan.logifit(x)
+  groan.fit.logi(x)
 }
 \arguments{
   \item{x}{A groan Curves object}
@@ -17,6 +17,6 @@
   Fits curves (e.g. growth curves) to a logisitic sigmoid.
 }
 \seealso{
-  \link[groan]{groan.pulsefit}, \link[stats]{nlminb}
+  \link[groan]{groan.fit.pulse}, \link[stats]{nlminb}
 }
 

@@ -21,6 +21,7 @@
   Fit model
 }
 \seealso{
-  \link[groan]{groan.pulsefit} \link[groan]{groan.logifit}
+  \link[groan]{groan.fit.pulse}
+  \link[groan]{groan.fit.logi}
 }
 

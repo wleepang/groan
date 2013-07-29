@@ -1,8 +1,8 @@
-\name{groan.pulsefit}
-\alias{groan.pulsefit}
+\name{groan.fit.pulse}
+\alias{groan.fit.pulse}
 \title{Pulse model fitting}
 \usage{
-  groan.pulsefit(x)
+  groan.fit.pulse(x)
 }
 \arguments{
   \item{x}{A groan Curves object}
@@ -17,6 +17,6 @@
   derived from a mixture of logistic sigmoids
 }
 \seealso{
-  \link[groan]{groan.logifit}, \link[stats]{nlminb}
+  \link[groan]{groan.fit.logi}, \link[stats]{nlminb}
 }
 
