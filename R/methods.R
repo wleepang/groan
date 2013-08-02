@@ -49,15 +49,49 @@ range.Curves = function(x, ...){
 plot.Curves = function(x, 
                        hlines = NULL, vlines = NULL, 
                        lyt = NULL, ...){
-  par.init = par()
-  on.exit({par(par.init); layout(1)})
+  par.init = par(no.readonly=TRUE)
+  on.exit({suppressWarnings(par(par.init)); layout(1)})
   
   par(mar=c(0,0,0,0))
   
+  if (is.null(lyt)) {
+    # guess the grid layout
+    ncol = ceiling(sqrt(length(x)))
+    nrow = ceiling(length(x)/ncol)
+    lyt = list(mat=matrix(1:(ncol*nrow), ncol=ncol, nrow=nrow, byrow=T))
+  }
+  
   do.call(layout, lyt)
   
-  lapply(names(x), function(n){
+  vargs = list(...)
+  
+  # plotting constants - these cannot be overwritten
+  vargs[['ann']] = FALSE
+  vargs[['xaxt']] = 'n'
+  vargs[['yaxt']] = 'n'
+  
+  # plotting defaults for aesthetics if they are not explicitly set
+  if (!'pch' %in% names(vargs)) vargs[['pch']] = 16
+  if (!'cex' %in% names(vargs)) vargs[['cex']] = 0.5
+  
+  if (!'ylim' %in% names(vargs)) {
+    ylim = apply(range(x), 1, median)
     
+    if ('log' %in% names(vargs) && grepl('y', vargs[['log']])) ylim = log10(ylim)
+    
+    ylim = ylim + c(-1, 1) * diff(ylim) * 0.25
+    
+    if ('log' %in% names(vargs) && grepl('y', vargs[['log']])) ylim = 10^ylim
+    
+    vargs[['ylim']] = ylim
+  }
+  
+  lapply(names(x), function(n){
+    pargs = c(list(x=x[[n]], y=NULL), vargs)
+    do.call(plot, pargs)
+    if (!is.null(hlines)) do.call(abline, c(h=hlines[[1]][n], hlines[-1]))
+    if (!is.null(vlines)) do.call(abline, c(v=vlines[[1]][n], vlines[-1]))
+    legend('bottomright', legend=n, bty='n')
   })
   
   invisible(NULL)
