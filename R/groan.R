@@ -340,9 +340,10 @@ groan.generations = function(x) {
 ##' @param na.rm Boolean, specifies if NA values are removed when finding max rates.
 ##' 
 ##' @details Simply a wrapper for \code{vapply}-ing \code{max} over the Curves object. 
+##' @section DEPRECATED
+##' This function is deprecated in favor of an S3 method
 ##' 
 ##' @return A numeric vector of maximum specific growth rates
-##' @export
 groan.mumax = function(x, na.rm=T) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
