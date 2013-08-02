@@ -23,6 +23,11 @@ groan.init = function(x) {
   
   xvals = x[,1]
   Curves = lapply(x[,-1], function(y){xy.coords(x=xvals, y=y, xlab=colnames(x)[1])})
+  Curves = sapply(names(Curves), function(n){
+    Curves[[n]]$ylab = n
+    return(Curves[[n]])
+  }, simplify=F, USE.NAMES=T)
+  
   class(Curves) = 'Curves'
   
   return(Curves)
