@@ -74,6 +74,15 @@ stats = data.frame(mumax = max(U.f),
                    gen   = groan.generations(U.f))
 ```
 
+Creating graphs of the data is as easy as:
+
+```R
+plot(Y)   # plot thumbnail grid of raw growth curves
+plot(U.s) # plot thumbnail grid of smoothed specific rate profiles
+
+plot(Y[[1]]) # plot the first growth curve in the data set by itself 
+```
+
 Credits
 -------
 `groan` was developed using:
