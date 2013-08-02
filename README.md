@@ -54,7 +54,7 @@ Y = read.csv('path/to/your/data.csv', stringsAsFactors=F)
 Y = groan.init(Y)
 U = groan.mu(Y)
 
-u.max = groan.mumax(U)
+u.max = max(U)
 ```
 
 A more complicated workflow that involves adaptive data smoothing and model
@@ -69,7 +69,7 @@ U = groan.mu(Y.s)
 U.s = groan.smooth(U, adaptive=T, method='loess')
 U.f = groan.fit(U.s, method='pulse')
 
-stats = data.frame(mumax = groan.mumax(U.f),
+stats = data.frame(mumax = max(U.f),
                    t.lag = groan.tlag(U.f),
                    gen   = groan.generations(U.f))
 ```
