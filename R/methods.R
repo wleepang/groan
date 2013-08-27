@@ -38,19 +38,30 @@ range.Curves = function(x, ...){
 ##' @param ... Additional arguments passed to \code{plot()} for the underlying
 ##'   individual curve data.
 ##' 
-##' @section Warnings
-##' This function uses \code{layout()} to generate a grid of thumbnails. It is 
-##' therefore incompatible with other device subplotting mechanims such as 
-##' \link[graphics]{par(mfrow)}, \link[graphics]{par(mfcol)}, and
-##' \link[graphics]{split.screen}
+##' @details
+##'   Arguments \code{hlines} and \code{vlines} are processed via \code{do.call()}.
 ##' 
-##' @seealso \link[base]{do.call}, \link[graphics]{layout}
+##' @section Warnings
+##'   This function uses \code{layout()} to generate a grid of thumbnails. It is 
+##'   therefore incompatible with other device subplotting mechanims such as 
+##'   \link[graphics]{par(mfrow)}, \link[graphics]{par(mfcol)}, and
+##'   \link[graphics]{split.screen}
+##' 
+##' @return
+##'   The grid layout matrix so that it can be reused in other plotting methods.
+##' 
+##' @seealso
+##'   \link[graphics]{plot.default}, \link[graphics]{lines}, \link[graphics]{points},
+##'   \link[graphics]{layout},
+##'   \link[base]{do.call}
+##' 
 ##' @export
 plot.Curves = function(x, 
                        hlines = NULL, vlines = NULL, 
                        lyt = NULL, ...){
-  par.init = par(no.readonly=TRUE)
-  on.exit({suppressWarnings(par(par.init)); layout(1)})
+  #par.init = par(no.readonly=TRUE)
+  par.init = par('mar')
+  on.exit({suppressWarnings(par(par.init))})#; layout(1)})
   
   par(mar=c(0,0,0,0))
   
@@ -92,6 +103,63 @@ plot.Curves = function(x,
     if (!is.null(hlines)) do.call(abline, c(h=hlines[[1]][n], hlines[-1]))
     if (!is.null(vlines)) do.call(abline, c(v=vlines[[1]][n], vlines[-1]))
     legend('bottomright', legend=n, bty='n')
+  })
+  
+  invisible(lyt)
+}
+
+##' @rdname plot.Curves
+##' @export
+lines.Curves = function(x, lyt, ...){
+  #on.exit(layout(1))
+  #do.call(layout, lyt)
+  
+  vargs = list(...)
+  
+  # plotting constants - these cannot be overwritten
+  vargs[['ann']] = FALSE
+  vargs[['xaxt']] = 'n'
+  vargs[['yaxt']] = 'n'
+  
+  # plotting defaults for aesthetics if they are not explicitly set
+  if (!'lwd' %in% names(vargs)) vargs[['lwd']] = 2
+  
+  lapply(seq_along(x), function(n){
+    # surprisingly, despite all the warnings in the documentation about how
+    # par(mfcol, mfrow, mfg) and layout() are incompatible, the following works!
+    par(mfg=which(lyt$mat == n, arr.ind=TRUE)[1,])
+    
+    pargs = c(list(x=x[[n]], y=NULL), vargs)
+    do.call(lines, pargs)
+  })
+  
+  invisible(NULL)
+}
+
+##' @rdname plot.Curves
+##' @export
+points.Curves = function(x, lyt, ...){
+  #on.exit(layout(1))
+  #do.call(layout, lyt)
+  
+  vargs = list(...)
+  
+  # plotting constants - these cannot be overwritten
+  vargs[['ann']] = FALSE
+  vargs[['xaxt']] = 'n'
+  vargs[['yaxt']] = 'n'
+  
+  # plotting defaults for aesthetics if they are not explicitly set
+  if (!'pch' %in% names(vargs)) vargs[['pch']] = 16
+  if (!'cex' %in% names(vargs)) vargs[['cex']] = 0.5
+  
+  lapply(seq_along(x), function(n){
+    # surprisingly, despite all the warnings in the documentation about how
+    # par(mfcol, mfrow, mfg) and layout() are incompatible, the following works!
+    par(mfg=which(lyt$mat == n, arr.ind=TRUE)[1,])
+    
+    pargs = c(list(x=x[[n]], y=NULL), vargs)
+    do.call(points, pargs)
   })
   
   invisible(NULL)

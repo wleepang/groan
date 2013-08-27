@@ -1,9 +1,15 @@
 \name{plot.Curves}
+\alias{lines.Curves}
 \alias{plot.Curves}
+\alias{points.Curves}
 \title{Plot Curves}
 \usage{
   plot.Curves(x, hlines = NULL, vlines = NULL, lyt = NULL,
     ...)
+
+  lines.Curves(x, lyt, ...)
+
+  points.Curves(x, lyt, ...)
 }
 \arguments{
   \item{x}{A groan Curves object}
@@ -29,19 +35,29 @@
   \item{...}{Additional arguments passed to \code{plot()}
   for the underlying individual curve data.}
 }
+\value{
+  The grid layout matrix so that it can be reused in other
+  plotting methods.
+}
 \description{
   Plots a Curves object as a grid of thumbnails.  Optional
   arguments allow for horizontal and vertical annotation
   lines and grid layout.
 }
+\details{
+  Arguments \code{hlines} and \code{vlines} are processed
+  via \code{do.call()}.
+}
 \section{Warnings
-This function uses \code{layout()} to generate a grid of thumbnails. It is
-therefore incompatible with other device subplotting mechanims such as
-\link[graphics]{par(mfrow)}, \link[graphics]{par(mfcol)}, and
-\link[graphics]{split.screen}}{
+  This function uses \code{layout()} to generate a grid of thumbnails. It is
+  therefore incompatible with other device subplotting mechanims such as
+  \link[graphics]{par(mfrow)}, \link[graphics]{par(mfcol)}, and
+  \link[graphics]{split.screen}}{
 
 }
 \seealso{
-  \link[base]{do.call}, \link[graphics]{layout}
+  \link[graphics]{plot.default}, \link[graphics]{lines},
+  \link[graphics]{points}, \link[graphics]{layout},
+  \link[base]{do.call}
 }
 
