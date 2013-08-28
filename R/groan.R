@@ -131,7 +131,7 @@ groan.smooth = function(x, method=c('spline', 'loess', 'lowess'), adaptive=FALSE
 ##' @return A groan Curves object representing specific growth rate profiles
 ##' 
 ##' @export
-groan.mu = function(x) {
+mu = function(x) {
   if (!is(x, 'Curves')) {
     stop('Input `x` must be a Curves object.  See ?groan.init')
   }
@@ -147,6 +147,15 @@ groan.mu = function(x) {
   class(u) = class(x)
   return(u)
 }
+
+##' @rdname mu
+##' @export
+groan.mu = function(...){mu(...)}
+
+##' @rdname mu
+##' @export
+specificRate = function(...){mu(...)}
+
 
 ##' Fit model
 ##' 
@@ -320,7 +329,7 @@ pulse = function(x, d=0, w=diff(range(x))/2, h=1, kr=1, kf=1, p=NULL){
 ##' @seealso \link[stats]{splinefun}, \link[stats]{integrate}
 ##' 
 ##' @export
-groan.generations = function(x) {
+generations = function(x) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -334,24 +343,9 @@ groan.generations = function(x) {
   return(G)
 }
 
-##' Maximum specific growth rate
-##' 
-##' @param x A groan Curves object of specific growth rate profiles
-##' @param na.rm Boolean, specifies if NA values are removed when finding max rates.
-##' 
-##' @details Simply a wrapper for \code{vapply}-ing \code{max} over the Curves object. 
-##' @section DEPRECATED
-##' This function is deprecated in favor of an S3 method
-##' 
-##' @return A numeric vector of maximum specific growth rates
-groan.mumax = function(x, na.rm=T) {
-  if (!is(x, 'Curves')) {
-    stop('Argument `x` must be a groan Curves object. See ?groan.init')
-  }
-  
-  mumax = vapply(x, function(xy){max(xy$y, na.rm=na.rm)}, numeric(1))
-  return(mumax)
-}
+##' @rdname generations
+##' @export
+groan.generations = function(...){generations(...)}
 
 ##' Estimate lag time
 ##' 
@@ -365,7 +359,7 @@ groan.mumax = function(x, na.rm=T) {
 ##' @return A numeric vector of lag times
 ##' @seealso \link[groan]{groan.tsat}
 ##' @export
-groan.tlag = function(x, pct.thresh = 0.05){
+tlag = function(x, pct.thresh = 0.05){
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -377,6 +371,11 @@ groan.tlag = function(x, pct.thresh = 0.05){
   
   return(tlag)
 }
+
+##' @rdname tlag
+##' @export
+groan.tlag = function(...){tlag(...)}
+
 
 ##' Estimate saturation time
 ##' 
@@ -390,7 +389,7 @@ groan.tlag = function(x, pct.thresh = 0.05){
 ##' @return A numeric vector of lag times
 ##' @seealso \link[groan]{groan.tlag}
 ##' @export
-groan.tsat = function(x, pct.thresh = 0.05){
+tsat = function(x, pct.thresh = 0.05){
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -403,6 +402,11 @@ groan.tsat = function(x, pct.thresh = 0.05){
   return(tsat)
 }
 
+##' @rdname tsat
+##' @export
+groan.tsat = function(...){tsat(...)}
+
+
 ##' Estimate carrying capacity
 ##' 
 ##' @param x A groan Curves object of growth curves
@@ -413,7 +417,7 @@ groan.tsat = function(x, pct.thresh = 0.05){
 ##' @return A numeric vector of capacity values
 ##' 
 ##' @export
-groan.capacity = function(x){
+capacity = function(x){
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -428,3 +432,7 @@ groan.capacity = function(x){
   
   return(cap)
 }
+
+##' @rdname capacity
+##' @export
+groan.capacity = function(...){capacity(...)}
