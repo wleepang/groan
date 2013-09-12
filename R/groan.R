@@ -461,3 +461,16 @@ capacity = function(x){
 ##' @rdname capacity
 ##' @export
 groan.capacity = function(...){capacity(...)}
+
+##' Run a Shiny App based on groan
+##' 
+##' @section Requirements:
+##'   \itemize{
+##'     \item package shiny
+##'     \item package shiny-incubator
+##'   }
+##' 
+##' @export
+groany = function() {
+  shiny::runApp(system.file('shinyapp', package='groan'))
+}

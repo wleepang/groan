@@ -1,7 +1,7 @@
 Package: groan
 Type: Package
 Title: Utilities for biological GROwth curve ANalysis
-Version: 1.1.0
+Version: 1.1.1
 Date: 2013-05-14
 Author: W. Lee Pang
 Maintainer: W. Lee Pang <wleepang@gmail.com>
@@ -11,6 +11,7 @@ Description: groan is a set of tools to assist in the analysis of biological
     time (tau).
 Issues: https://github.com/wleepang/groan/issues
 License: GPL-3
+Suggests: devtools, shiny, shiny-incubator
 VingetteBuilder: knitr
 Collate:
     'smooth.R'
