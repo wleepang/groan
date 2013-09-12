@@ -83,6 +83,13 @@ plot(U.s) # plot thumbnail grid of smoothed specific rate profiles
 plot(Y[[1]]) # plot the first growth curve in the data set by itself 
 ```
 
+For the totally impatient that need results immediately, use the provided
+[Shiny](http://rstudio.com/shiny) web based application:
+
+```R
+groany()
+```
+
 Credits
 -------
 `groan` was developed using:
