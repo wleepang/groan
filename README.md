@@ -67,7 +67,7 @@ Y.s = groan.smooth(Y, adaptive=T, method='loess')
 
 U = groan.mu(Y.s)
 U.s = groan.smooth(U, adaptive=T, method='loess')
-U.f = groan.fit(U.s, method='pulse')
+U.f = groan.fit(U.s, model='pulse')
 
 stats = data.frame(mumax = max(U.f),
                    t.lag = groan.tlag(U.f),
