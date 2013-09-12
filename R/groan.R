@@ -448,7 +448,7 @@ capacity = function(x){
   }
   
   if (!'fit.logi' %in% names(x[[1]])) {
-    x = groan.fit(x, method='logi')
+    x = groan.fit(x, model='logi')
   }
   
   cap = vapply(x, function(xy){

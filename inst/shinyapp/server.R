@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
     progress = Progress$new(session)
     
     progress$set(message='Fitting rate profile', value=0.2)
-    U.f = groan.fit(U(), method='pulse')
+    U.f = groan.fit(U(), model='pulse')
     progress$set(message='Done', value=1)
     progress$close()
     
