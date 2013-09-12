@@ -2,7 +2,7 @@
 \alias{groan.fit}
 \title{Fit model}
 \usage{
-  groan.fit(x, method = c("pulse", "logi"))
+  groan.fit(x, model = c("pulse", "logi"), ...)
 }
 \arguments{
   \item{x}{A groan Curves object}
@@ -11,6 +11,9 @@
   \item{pulse}{logistic pulse, typical for specific rate
   curves.} \item{logi}{logisic sigmoid, typical for growth
   curves.} }}
+
+  \item{...}{additional arguments to pass to underlying
+  functions.}
 }
 \value{
   A groan Curves object were y-values are replaced with

@@ -5,12 +5,15 @@
   groan.smooth(x, method = c("spline", "loess", "lowess"),
     adaptive = FALSE,
     FUN.IN = list(x = identity, y = identity),
-    FUN.OUT = list(x = identity, y = identity), ...)
+    FUN.OUT = list(x = identity, y = identity),
+    FUN.PROGRESS = NULL, ...)
 }
 \arguments{
   \item{x}{A groan Curves object}
 
-  \item{method}{Underlying smoothing algorithm to apply.}
+  \item{method}{Underlying smoothing algorithm to apply.
+  Options are \code{spline} (default), \code{loess}, or
+  \code{lowess}.}
 
   \item{adaptive}{Defines if an adaptive approach should be
   applied. See details.}
@@ -19,10 +22,14 @@
   x,y-coordinates prior to smoothing.  Default is
   \code{list(x=identity, y=identity)}.}
 
-  \item{FUN.OUT}{List of function to apply to
+  \item{FUN.OUT}{List of functions to apply to
   x,y-coordinates post smoothing.  Typically, this is the
   inverse of the function applied in \code{FUN.IN}.
   Default is \code{list(x=identity, y=identity)}.}
+
+  \item{FUN.PROGRESS}{Function to call after each smoothing
+  operation to indicate progress.  Default is \code{NULL},
+  nothing is done.}
 
   \item{...}{further arguments passed to underlying
   function calls.}

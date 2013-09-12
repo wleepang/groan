@@ -36,13 +36,16 @@ groan.init = function(x) {
 ##' Apply smoothing to a groan Curves object
 ##' 
 ##' @param x A groan Curves object
-##' @param method Underlying smoothing algorithm to apply.
+##' @param method Underlying smoothing algorithm to apply. Options are \code{spline} (default),
+##'   \code{loess}, or \code{lowess}.
 ##' @param adaptive Defines if an adaptive approach should be applied. See details.
 ##' @param FUN.IN List of functions to apply to x,y-coordinates prior to smoothing.
 ##'   Default is \code{list(x=identity, y=identity)}.
-##' @param FUN.OUT List of function to apply to x,y-coordinates post smoothing.
+##' @param FUN.OUT List of functions to apply to x,y-coordinates post smoothing.
 ##'   Typically, this is the inverse of the function applied in \code{FUN.IN}.
 ##'   Default is \code{list(x=identity, y=identity)}.
+##' @param FUN.PROGRESS Function to call after each smoothing operation to
+##'   indicate progress.  Default is \code{NULL}, nothing is done.
 ##' @param ... further arguments passed to underlying function calls.
 ##' 
 ##' @details
@@ -83,7 +86,11 @@ groan.init = function(x) {
 ##'     \link[stats]{optim}
 ##' 
 ##' @export
-groan.smooth = function(x, method=c('spline', 'loess', 'lowess'), adaptive=FALSE, FUN.IN=list(x=identity, y=identity), FUN.OUT=list(x=identity, y=identity), ...) {
+groan.smooth = function(x, 
+                        method=c('spline', 'loess', 'lowess'), adaptive=FALSE, 
+                        FUN.IN=list(x=identity, y=identity), FUN.OUT=list(x=identity, y=identity), 
+                        FUN.PROGRESS=NULL,
+                        ...) {
   if (class(x) != 'Curves') {
     stop('Required argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -114,6 +121,11 @@ groan.smooth = function(x, method=c('spline', 'loess', 'lowess'), adaptive=FALSE
     x[[n]]$y = FUN.OUT$y(s$y)
     
     x[[n]][['smooth']] = list(call=fcall, result=s)
+    
+    if (!is.null(FUN.PROGRESS)) {
+      FUN.PROGRESS(...)
+    }
+    
     return(x[[n]])
   }, ...)
   
@@ -165,23 +177,24 @@ specificRate = function(...){mu(...)}
 ##'     \item{pulse}{logistic pulse, typical for specific rate curves.}
 ##'     \item{logi}{logisic sigmoid, typical for growth curves.}
 ##'   }
+##' @param ... additional arguments to pass to underlying functions.
 ##' 
 ##' @return A groan Curves object were y-values are replaced with fitted model
 ##'   predictions.  Also, model fit details are appended as additional properties.
 ##' 
 ##' @seealso \link[groan]{groan.fit.pulse} \link[groan]{groan.fit.logi}
 ##' @export
-groan.fit = function(x, method=c('pulse', 'logi')) {
+groan.fit = function(x, model=c('pulse', 'logi'), ...) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
   
-  method = match.arg(method)
-  fit.fun = switch(method, 
+  model = match.arg(model)
+  fit.fun = switch(model, 
                    pulse = groan.fit.pulse, 
                    logi  = groan.fit.logi)
   
-  return(fit.fun(x))
+  return(fit.fun(x, ...))
 }
 
 ##' Pulse model fitting
@@ -190,13 +203,15 @@ groan.fit = function(x, method=c('pulse', 'logi')) {
 ##' of logistic sigmoids
 ##' 
 ##' @param x A groan Curves object
+##' @param FUN.PROGRESS Function to call after each fitting operation to
+##'   indicate progress.  Default is \code{NULL}, nothing is done.
 ##' 
 ##' @return A groan Curves object where y-coordinates are the fitted pulse profile.
 ##'   In addition, results of the fit, e.g. pulse parameters and goodness-of-fit
 ##'   statistics.
 ##' 
 ##' @seealso \link[groan]{groan.fit.logi}, \link[stats]{nlminb}
-groan.fit.pulse = function(x) {
+groan.fit.pulse = function(x, FUN.PROGRESS=NULL, ...) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -217,6 +232,10 @@ groan.fit.pulse = function(x) {
     xy[['fit.pulse']] = fit
     xy[['fit.pulse.gof']] = gof
     
+    if (!is.null(FUN.PROGRESS) && is.function(FUN.PROGRESS)) {
+      FUN.PROGRESS(...)
+    }
+    
     return(xy)
   })
   class(x.f) = class(x)
@@ -228,13 +247,15 @@ groan.fit.pulse = function(x) {
 ##' Fits curves (e.g. growth curves) to a logisitic sigmoid.
 ##' 
 ##' @param x A groan Curves object
+##' @param FUN.PROGRESS Function to call after each fitting operation to
+##'   indicate progress.  Default is \code{NULL}, nothing is done.
 ##' 
 ##' @return A groan Curves object where y-coordinates are the fitted logistic
 ##'   sigmoid profile.  In addition, results of the fit, e.g. sigmoid parameters
 ##'   and goodness-of-fit statistics.
 ##' 
 ##' @seealso \link[groan]{groan.fit.pulse}, \link[stats]{nlminb}
-groan.fit.logi = function(x) {
+groan.fit.logi = function(x, FUN.PROGRESS=NULL, ...) {
   if (!is(x, 'Curves')) {
     stop('Argument `x` must be a groan Curves object. See ?groan.init')
   }
@@ -254,6 +275,10 @@ groan.fit.logi = function(x) {
     xy$y = y.f
     xy[['fit.logi']] = fit
     xy[['fit.logi.gof']] = gof
+    
+    if (!is.null(FUN.PROGRESS) && is.function(FUN.PROGRESS)) {
+      FUN.PROGRESS(...)
+    }
     
     return(xy)
   })

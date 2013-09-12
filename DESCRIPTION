@@ -1,7 +1,7 @@
 Package: groan
 Type: Package
 Title: Utilities for biological GROwth curve ANalysis
-Version: 1.0.2
+Version: 1.1.0
 Date: 2013-05-14
 Author: W. Lee Pang
 Maintainer: W. Lee Pang <wleepang@gmail.com>
@@ -9,6 +9,7 @@ Description: groan is a set of tools to assist in the analysis of biological
     growth curves.  It provides functions to smooth input data and extract key
     parameters such as specific growth rate (mu), carrying capacity (A), and lag
     time (tau).
+Issues: https://github.com/wleepang/groan/issues
 License: GPL-3
 VingetteBuilder: knitr
 Collate:

@@ -97,12 +97,12 @@ plot.Curves = function(x,
     vargs[['ylim']] = ylim
   }
   
-  lapply(names(x), function(n){
+  lapply(seq_along(x), function(n){
     pargs = c(list(x=x[[n]], y=NULL), vargs)
     do.call(plot, pargs)
     if (!is.null(hlines)) do.call(abline, c(h=hlines[[1]][n], hlines[-1]))
     if (!is.null(vlines)) do.call(abline, c(v=vlines[[1]][n], vlines[-1]))
-    legend('bottomright', legend=n, bty='n')
+    legend('bottomright', legend=names(x)[n], bty='n')
   })
   
   invisible(lyt)

@@ -2,10 +2,14 @@
 \alias{groan.fit.pulse}
 \title{Pulse model fitting}
 \usage{
-  groan.fit.pulse(x)
+  groan.fit.pulse(x, FUN.PROGRESS = NULL, ...)
 }
 \arguments{
   \item{x}{A groan Curves object}
+
+  \item{FUN.PROGRESS}{Function to call after each fitting
+  operation to indicate progress.  Default is \code{NULL},
+  nothing is done.}
 }
 \value{
   A groan Curves object where y-coordinates are the fitted

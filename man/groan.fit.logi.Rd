@@ -2,10 +2,14 @@
 \alias{groan.fit.logi}
 \title{Logistic sigmoid model fitting}
 \usage{
-  groan.fit.logi(x)
+  groan.fit.logi(x, FUN.PROGRESS = NULL, ...)
 }
 \arguments{
   \item{x}{A groan Curves object}
+
+  \item{FUN.PROGRESS}{Function to call after each fitting
+  operation to indicate progress.  Default is \code{NULL},
+  nothing is done.}
 }
 \value{
   A groan Curves object where y-coordinates are the fitted
