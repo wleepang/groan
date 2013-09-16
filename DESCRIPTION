@@ -11,7 +11,7 @@ Description: groan is a set of tools to assist in the analysis of biological
     time (tau).
 Issues: https://github.com/wleepang/groan/issues
 License: GPL-3
-Suggests: devtools, shiny, shiny-incubator
+Suggests: devtools, shiny, shinyIncubator
 VingetteBuilder: knitr
 Collate:
     'smooth.R'
